@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180 Project 1</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">Project 1</h1>
+<h1 align="middle">Images of the Russian Empire</h1>
+<h2 align="middle">Mahum Khan</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>In project 1, we were given the same image in three color channels: red, green, and blue. </display></p>
+
+<!-- <div align="middle"></div>
+  <img src="proj1_code/data/cathedral.jpg" align="middle" width="200px"/>
+  <figcaption align="middle">The original Cathedral.jpg with the top, middle and bottom image representing the blue, green, red channel, respectively.</figcaption>
+</div> -->
+
+<div style="text-align: center;"></div>
+  <img src="../proj1_code/out_path/cathedral.jpg" width="200px" style="display: block; margin: 0 auto;"/>
+  <figcaption>The original cathedral.jpg with the top, middle and bottom image representing the blue, green, and red channels, respectively</figcaption>
+</div>
+
+
+<h2 align="middle">Part 1: The JPEGs</h2>
+
+<p>To generate an image with color, we needed to stack the three images on top of each other which will produce an image with the colors. Since we already have the colors, 
+  the first step would require loading in the image such that we have a variable that holds each color channel. The alignment algorithm compares two of the color channels at a time. 
+  One channel will act as the base and the other - the top channel - will be compared to the base channel. Then, this approach would require sampling a box of around 30 pixels of the 
+  top channel and calculating the distance between each position and the base channel. The shift that returns the closest distance between the channels would be the best split and the 
+  top image would be rolled by that amount via np.roll. This process is then repeated with the other color’s channel acting as the top channel and the same base channel from the first step. 
+  Then, all three channels would be aligned and can be stacked to produce the image in color. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="../proj1_code/out_path/monastery_before_alignment.jpg" width="400px"/>
+        <figcaption>monastery.jpg with the color channels stacked upon each other before the alignment algorithm</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../proj1_code/out_path/monastery_output.jpg" width="400px"/>
+        <figcaption>monastery.jpg with the color channels stacked upon each other after the alignment algorithm is implemented</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>As shown the before and after in monastery.jpg, the algorithm moved the blue and red channels based on the green channel to align the each pixel from each pixel to produce 
+  the after image filled with color. 
+</p>
+
+<h3 align="middle">Part 2: The TIFs</h3>
+<p> Despite its accuracy, this naive approach would take too long to run on larger files. The solution to resolve this would involve rescaling the image to smaller 
+  sizes such that there are several layers of the same image but each layer is scaled by 2 until it hits the size of the original .tif. Then, I ran the alignment 
+  algorithm implemented in part 1 on that image and rescaled the displacement vector for each level. I repeated those steps recursively till it hit the level with 
+  the actual size of the image and rolled the image by shift that was determined by accumulative rolls. 
+  <br></br>
+  The reason this makes the run-time much faster is because the amount of data that needs to be searched through significantly decreases as the size of the images 
+  being searched decreases. It also maintains its accuracy because amount of the displacement is being adjusted for each layer. 
+  
+</p>
+
+<h2 align="middle">The Gallery</h2>
+
+
+<div style="text-align: center;">
+  <table style="width: 100%; table-layout: fixed;">
+    <tr>
+      <td><img src="../proj1_code/out_path/monastery_output.jpg" width="100%"><figcaption align="middle">blue color channel displacement vector: (0, 6) <br> red color channel displacement vector: (1, 6)</figcaption></td>
+      <td><img src="../proj1_code/out_path/cathedral_output.jpg" width="100%"><figcaption align="middle">blue color channel displacement vector: (-1, -4) <br> red color channel displacement vector: (-2, -3)</figcaption></td>
+      <td><img src="../proj1_code/out_path/tobolsk_output.jpg" width="100%"><figcaption align="middle">blue color channel displacement vector: (-2, -3) <br> red color channel displacement vector: (1, 4)</figcaption></td>
+    </tr>
+    <tr>
+      <td><img src="../proj1_code/out_path/emir.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-21, -50) <br> red color channel displacement vector: (17, 57)</figcaption></td>
+      <td><img src="../proj1_code/out_path/lady.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-10, -88) <br> red color channel displacement vector: (4, 96)</figcaption></td>
+      <td><img src="../proj1_code/out_path/harvesters.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-14, -59) <br> red color channel displacement vector: (-2, 64)</figcaption></td>
+      <td><img src="../proj1_code/out_path/three_generations.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-15, -57) <br> red color channel displacement vector: (-5, 58)</figcaption></td>
+    </tr>
+    <tr>
+      <td><img src="../proj1_code/out_path/train.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (11, -33) <br> red color channel displacement vector: (-16, 107)</figcaption></td>
+      <td><img src="../proj1_code/out_path/onion.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-24, -52) <br> red color channel displacement vector: (10, 57)</figcaption></td>
+      <td><img src="../proj1_code/out_path/melons.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (2, -40) <br> red color channel displacement vector: (27, 42)</figcaption></td>
+      <td><img src="../proj1_code/out_path/icon.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-16, -39) <br> red color channel displacement vector: (5, 48)</figcaption></td>
+    </tr>
+    <tr>
+      <td><img src="../proj1_code/out_path/church.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-8, -57) <br> red color channel displacement vector: (3, 63)</figcaption></td>
+      <td><img src="../proj1_code/out_path/sculpture.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (11, -33) <br> red color channel displacement vector: (-16, 107)</figcaption></td>
+      <td><img src="../proj1_code/out_path/self_portrait.png" width="100%"><figcaption align="middle">blue color channel displacement vector: (-28, -78) <br> red color channel displacement vector: (8, 98)</figcaption></td>
+    </tr>
+  </table>
+</div>
+
+
+
+</body>
+</html>
