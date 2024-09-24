@@ -1,0 +1,332 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180 Project 2</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">Project 2</h1>
+<h1 align="middle">Filters and Frequencies</h1>
+<h2 align="middle">Mahum Khan</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>In this project, we manipulated the different aspects of each image by harnessing the dynamic between high and low frequencies.
+</display></p>
+
+
+<h2 align="middle">Part 1: Filters</h2>
+
+<p> The building blocks of this project requires us to understand how to create blurry effect on our images to capture the noise. 
+  In order to do this, we must first get a kernel and convolve the image based on that kernel. For the finite difference operators, 
+  there is vector defined in the x and y-direction.  
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="../../proj2/partial_x.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../../proj2/partial_y.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="../../proj2/grad_mag.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../../proj2/binarized_grad_mag.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p> Combining the x and y convolution, the gradient magnitude is produced. Then, we can turn it into a edge image by binarizing it. 
+  The bottom 2 images show the gradient magnitude which is a technique used in image processing to identify and emphasize edges in an image. 
+  It is computed by convolving the image with the horizontal filter and the vertical filter which provides two matrices representing the rate 
+  of change in intensity in the x and y directions for each pixel.
+</p>
+
+<p> In another method, we can use a 1D guassian kernel and take the outer product with its transpose to obtain a 2D filter. 
+   After applying the Gaussian smoothing, I repeated the process of finding differences (like calculating gradients and edges).
+   The main observation is that the results are less noisy and cleaner compared to the direct use of the difference operator.
+   Because the process is associative, convolving the Gaussian filter with derivative operators - creating Derivatives of Gaussian filters - 
+   and then convolve the original image will produce the same image. This DoG method is more effective as it only requires a single convolution step
+   but both produce the images that are smoother and exhibit less noise. 
+</p>
+
+<div style="text-align: center;"></div>
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="../../proj2/by_blurring.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../../proj2/by_DoG.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p> As you can see, both images are identical despite the different methods to obtain each image. 
+</p>
+
+
+<h2 align="middle">Part 2: Frequencies</h2>
+
+<h3 align="middle">Sharpening Images</h3>
+<p> To sharpen an image, we need to sharpen the details. Doing this is simply now that we know we can get rid of all the noise by applying the 
+  gaussian filtering and subtract that from the image. This will then give an image with just the details and we can amplify those details by multiplying
+  by some factor. 
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="../../proj2/blurred_taj.png" width="400px"/>
+        <figcaption>The image is blurred using a guassian filter</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../../proj2/details_taj.png" width="400px"/>
+        <figcaption>The original image is subtracted by the blurry image to show just the details</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="../../proj2/og_taj.png" width="400px"/>
+        <figcaption>The image before sharpening</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../../proj2/final_taj.png" width="400px"/>
+        <figcaption>The image after sharpening</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p> It is clear that through this process that the sharpened version of the original image has more definition in the outline of the dome
+  and each brick is much more distinct. Here is another example. 
+</p>
+
+<div style="text-align: center;"></div>
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="../../proj2/blurred_kabaah.png" width="400px"/>
+        <figcaption>The image is blurred using a guassian filter</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../../proj2/details_kabaah.png" width="400px"/>
+        <figcaption>The original image is subtracted by the blurry image to show just the details</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="../../proj2/og_kabaah.png" width="400px"/>
+        <figcaption>The image before sharpening</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="../../proj2/final_kabaah.png" width="400px"/>
+        <figcaption>The image after sharpening</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h3 align="middle">Hybrid Images</h3>
+
+<p> We can also create an illusion by stacking a high frequencies of one image onto the low frequencies of the other image. The algorithm 
+  to do this first requires that the 2 images are aligned. The low frequencies can be generated by simply using a guassian filter. The high frequency
+  image is generated by finding the low frequency and subtracting that from the original image. Then, the images are stacked on top of each other.  
+</p>
+
+<div style="text-align: center;"></div>
+<table style="width: 100%; margin: 0 auto;">
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/gosling.png" width="400px"/>
+      <figcaption>Ryan Reynold before his low frequencies are used</figcaption>
+    </td>
+    <td style="text-align: center;">
+      <img src="../../proj2/reynold.png" width="400px"/>
+      <figcaption>Ryan Reynold before his high frequencies are used</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;" colspan="2">
+      <img src="../../proj2/ryans.png" width="400px"/>
+      <figcaption>The images together</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/before_freq.png" width="400px"/>
+      <figcaption>The frequencies of each before combining</figcaption>
+    </td>
+    <td style="text-align: center;">
+      <img src="../../proj2/ryans_freq.png" width="400px"/>
+      <figcaption>The frequencies of each after combining</figcaption>
+    </td>
+  </tr>
+</table>
+</div>
+
+<div style="text-align: center;"></div>
+<table style="width: 100%; margin: 0 auto;">
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/trump.png" width="400px"/>
+      <figcaption>Trump before his low frequencies are used</figcaption>
+    </td>
+    <td style="text-align: center;">
+      <img src="../../proj2/harris.png" width="400px"/>
+      <figcaption>Harris before her high frequencies are used</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;" colspan="2">
+      <img src="../../proj2/trump_harris.png" width="400px"/>
+      <figcaption>The images together</figcaption>
+    </td>
+  </tr>
+</table>
+</div>
+
+<p> An example of a failure: This one did not work because the high frequencies of the flag on top blends in with the low frequencies of the 
+  American flag so the high frequencies don't properly display the illusion. 
+</p>
+
+<div style="text-align: center;"></div>
+<table style="width: 100%; margin: 0 auto;">
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/america.png" width="400px"/>
+      <figcaption>American flag before its low frequencies are used</figcaption>
+    </td>
+    <td style="text-align: center;">
+      <img src="../../proj2/nasty.png" width="400px"/>
+      <figcaption>This flag before its high frequencies are used</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;" colspan="2">
+      <img src="../../proj2/reality.png" width="400px"/>
+      <figcaption>The images together</figcaption>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+<h3 align="middle">Gaussian and Laplacian Stacks</h3>
+<p> Now we will shift focus to developing a way to blend images. To do this, we need to first create a stack of images with the guassian
+  filter applied to them at increasing intensities. Using the guassian stack, we can also determine the laplacian stack by subtracing the 
+  current guassian level with the one after. 
+</p>
+
+<div style="text-align: center;"></div>
+<table style="width: 100%; margin: 0 auto;">
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/apple_g.png" width="600px"/>
+      <figcaption>The Gaussian Stack of an Apple</figcaption>
+    </td>
+    <td style="text-align: center;">
+      <img src="../../proj2/apple_l.png" width="600px"/>
+      <figcaption>The Lapacian Stack of an Apple</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/orange_g.png" width="600px"/>
+      <figcaption>The Gaussian Stack of an Orange</figcaption>
+    </td>
+    <td style="text-align: center;">
+      <img src="../../proj2/orange_l.png" width="600px"/>
+      <figcaption>The Gaussian Stack of an Orange</figcaption>
+    </td>
+  </tr>
+</table>
+</div>
+<h3 align="middle">Multiresolutional Blending</h3>
+<p> Using the guassian and laplacian stacks, we can blend 2 images together. After we have the respective stacks, we need to have a guassian stack
+  of the mask. Then, apply the formula: blended = (1 - guassian_mask_stack) * image1 + guassian_mask_stack * image2
+</p>
+
+
+
+<p> 
+</p>
+
+<div style="text-align: center;"></div>
+<table style="width: 100%; margin: 0 auto;">
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/mask_g.png" width="800px"/>
+      <figcaption>Mask for the image below</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/oraple.png" width="400px"/>
+      <figcaption>Oraple!</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/mask_pigfly.png" width="800px"/>
+      <figcaption>Mask for the image below</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/whenpigsfly.png" width="800px"/>
+      <figcaption>I will finish this project when pigs fly (irregular mask)</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/mask_hotdog.png" width="800px"/>
+      <figcaption>Mask for the image below</figcaption>
+    </td>
+  </tr>
+  <tr>
+    <td style="text-align: center;">
+      <img src="../../proj2/hotdog.png" width="800px"/>
+      <figcaption>Hot diggity dog (linear mask)</figcaption>
+    </td>
+  </tr>
+</table>
+</div>
+
+</body>
+</html>
