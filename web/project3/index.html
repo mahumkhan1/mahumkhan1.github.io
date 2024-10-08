@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180 Project 3</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">Project 3</h1>
+<h1 align="middle">Face Morphing</h1>
+<h2 align="middle">Mahum Khan</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>Face morphing involves an understanding of corresponding points and how that alignment can be manipulated to produce a warped image that can 
+  produce a face-morphing affect. 
+</display></p>
+
+
+<h2 align="middle">Part 1: Defining Correspondences</h2>
+
+<p> The first step was to identify the two images that are being warped and to label the points that are corresponding. In my example, I used the 
+  tool developed by another student in the previous year to match each point labeled on both images. I then used Delaunay library from scipy. to 
+  determine the triangulation based on the given points. That then produces the following images. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part1/natanyaho_corr.jgp" width="400px"/>
+        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="part1/satan_corr.jpg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of satan</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Part 2: Computing the "Mid-way Face"</h2>
+
+<p> The next step is to develop a method that morphs an image. The algorithm of this function is that for each triangle in the source 
+  image, the corresponding area is warped to fit the target triangle, and this is repeated for all triangles. By doing this, the face
+  image is transformed to fit an average shape. The warping aspect requires another functionality that calculates the affine matrix 
+  transformation. By doing this process on each image and passing in the same triangulation from the previous part, it will warp each 
+  image to eachother creating a form of a hybrid. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part2/mid_image.jgp" width="400px"/>
+        <figcaption>Mid-way Face of a person(?) and satan</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Part 3: The Morph Sequence</h2>
+
+<p> Now that the basic functionality has been implemented, we can create a morph sequence by adjusting the amount that the points from each 
+  image are weighted.  
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part2/output_animation.gif" width="400px"/>
+        <figcaption>A gif of all the images from morph sequence combined</figcaption>
+      </td>
+    </tr>
+</div>
+
+<h2 align="middle">Part 4: The "Mean Face" of a population</h2>
+<p> For this part, I used the Danes dataset provided in Danes where I was given 37 images of people's faces. For each face, I was given the jpg 
+  of the face and an asf file that has the information of points that outline the features of the faces. After extracting the points from each image, 
+  I took the average to have that will be used as the average shape. Then, I warped each image from the data to that average shape. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part4/ex1.jpg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="part4/ex1_morphed.jpg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of satan</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="part4/ex2.jpg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="part4/ex2_morphed.jpg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of satan</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="part4/ex3.jpg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="part4/ex3_morphed.jpg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of satan</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p> I can take all the morphed images and find the average which will produce a very symmetrical result. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part4/avg_morphed.jpeg" width="400px"/>
+        <figcaption>My face morphed to the average shape of the points.</figcaption>
+      </td>
+    </tr>
+</div>
+
+<p> Now, I will take an image of my face and map the corresponding points. Then, I can morph my face and the points to the average shape of
+  points from the dataset. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part4/me_to_avg_face.jpeg" width="400px"/>
+        <figcaption>My face morphed to the average shape of the points.</figcaption>
+      </td>
+    </tr>
+</div>
+<p>
+  I can even take the average shape of points of my face and morph the average image from the data to my face. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part4/avg_face_to_me.jpeg" width="400px"/>
+        <figcaption>Average face morphed to the average of the points of my face.</figcaption>
+      </td>
+    </tr>
+</div>
+
+<h2 align="middle">Part 5: Caricatures - Extrapolating from the Mean</h2>
+<p> 
+  By using the calculations from the previous part, I can adjust the value that determined how much to morph each image to the other to be either 
+  less than 0 or greater than 1. When the value is less than 0, it will exaggerate the features on my face. For values greater than 1, it will 
+  exaggerate the features on the average image.  
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="part4/ex1.jpg" width="400px"/>
+        <figcaption>exaggerating my features</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="part4/ex1_morphed.jpg" width="400px"/>
+        <figcaption>exaggerating average image's features</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Bells and Whistles</h2>
+<p> 
+  I created a music video with all my passport pictures morphing into eachother. The last time I got a passport picture was when I was 10. 
+</p>
+
+</body>
+</html>
