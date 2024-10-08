@@ -48,8 +48,8 @@
   <table style="width: 100%; margin: 0 auto;">
     <tr>
       <td style="text-align: center;">
-        <img src="part1/natanyaho_corr.jgep" width="400px"/>
-        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+        <img src="part1/natanyaho_corr.jpeg" width="400px"/>
+        <figcaption>Keypoints and Triangulation of a person(?)</figcaption>
       </td>
       <td style="text-align: center;">
         <img src="part1/satan_corr.jpeg" width="400px"/>
@@ -80,20 +80,23 @@
 </div>
 
 <h2 align="middle">Part 3: The Morph Sequence</h2>
-
 <p> Now that the basic functionality has been implemented, we can create a morph sequence by adjusting the amount that the points from each 
   image are weighted.  
 </p>
-
 <div style="text-align: center;">
   <table style="width: 100%; margin: 0 auto;">
     <tr>
       <td style="text-align: center;">
-        <img src="part2/output_animation.gif" width="400px"/>
-        <figcaption>A gif of all the images from morph sequence combined</figcaption>
+        <figure>
+          <img src="part2/output_animation.gif" width="400px" alt="Morph sequence GIF"/>
+          <figcaption>A gif of all the images from the morph sequence combined</figcaption>
+        </figure>
       </td>
     </tr>
+  </table> 
 </div>
+
+
 
 <h2 align="middle">Part 4: The "Mean Face" of a population</h2>
 <p> For this part, I used the Danes dataset provided in Danes where I was given 37 images of people's faces. For each face, I was given the jpg 
@@ -106,31 +109,31 @@
     <tr>
       <td style="text-align: center;">
         <img src="part4/ex1.jpeg" width="400px"/>
-        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+        <figcaption>Example 1 - Before Morped</figcaption>
       </td>
       <td style="text-align: center;">
         <img src="part4/ex1_morphed.jpeg" width="400px"/>
-        <figcaption>Keypoints and Triangulation of satan</figcaption>
+        <figcaption>Example 1 - After Morped</figcaption>
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
         <img src="part4/ex2.jpeg" width="400px"/>
-        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+        <figcaption>Example 2 - Before Morped</figcaption>
       </td>
       <td style="text-align: center;">
         <img src="part4/ex2_morphed.jpeg" width="400px"/>
-        <figcaption>Keypoints and Triangulation of satan</figcaption>
+        <figcaption>Example 2 - After Morped</figcaption>
       </td>
     </tr>
     <tr>
       <td style="text-align: center;">
         <img src="part4/ex3.jpeg" width="400px"/>
-        <figcaption>Keypoints and Triangulation of a Person(?)</figcaption>
+        <figcaption>Example 3 - Before Morped</figcaption>
       </td>
       <td style="text-align: center;">
         <img src="part4/ex3_morphed.jpeg" width="400px"/>
-        <figcaption>Keypoints and Triangulation of satan</figcaption>
+        <figcaption>Example 3 - After Morped</figcaption>
       </td>
     </tr>
   </table>
@@ -144,7 +147,7 @@
     <tr>
       <td style="text-align: center;">
         <img src="part4/avg_morphed.jpeg" width="400px"/>
-        <figcaption>My face morphed to the average shape of the points.</figcaption>
+        <figcaption>Average of all the morphed faces. </figcaption>
       </td>
     </tr>
 </div>
@@ -161,6 +164,7 @@
         <figcaption>My face morphed to the average shape of the points.</figcaption>
       </td>
     </tr>
+    </table>
 </div>
 <p>
   I can even take the average shape of points of my face and morph the average image from the data to my face. 
@@ -174,6 +178,7 @@
         <figcaption>Average face morphed to the average of the points of my face.</figcaption>
       </td>
     </tr>
+  </table>
 </div>
 
 <h2 align="middle">Part 5: Caricatures - Extrapolating from the Mean</h2>
