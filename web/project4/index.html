@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180 Project 4A</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">Project 4: Part A</h1>
+<h1 align="middle">Image Warping and Mosaicing</h1>
+<h2 align="middle">Mahum Khan</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview of Computing Homography and Warping the Image</h2>
+<p>In project 4, we were tasked by manipulating images by using its homography and to using that to warp the image to get the information we need. 
+     </display></p>
+
+<!-- <div align="middle"></div>
+  <img src="proj1_code/data/cathedral.jpg" align="middle" width="200px"/>
+  <figcaption align="middle">The original Cathedral.jpg with the top, middle and bottom image representing the blue, green, red channel, respectively.</figcaption>
+</div> -->
+
+
+
+<h2 align="middle">Image Rectification</h2>
+
+<p> Once we have a function that computes the homography based on 2 sets of points and and another function that can warp the image based on
+    the given homography, we have all the tools we need to rectify a part of the image. We first select points; the first set of points are 
+    the corners of the object that is being rectified and the second set of points are simply the dimentions that the image is being warped onto. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="pre-rectify.jpeg" width="400px"/>
+        <figcaption>The image before any rectification. </figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="rectified_output.jpeg" width="400px"/>
+        <figcaption>The rectified version of the page on the desk.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<h3 align="middle">Blend the Images into a Mosaic</h3>
+<p> Instead of warping into set of points that are dimentions, we will be warping the images into eachother. I selected the middle image to be reference 
+    image and warped the surrounding images into to it. Then, I stiched the images together but this created strong edge artifacts. To combat that, I computed
+    the weighted average based on the distance transform. However, this still creates blurry artifacts due to the lighting in some images. In the next step, 
+    I plan to use Laplacian pyramids to smooth it out. 
+  
+</p>
+
+<h2 align="middle">The Gallery</h2>
+
+
+<div style="text-align: center;">
+  <table style="width: 100%; table-layout: fixed;">
+    <tr>
+      <td><img src="mosaic_before/im1.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+      <td><img src="mosaic_before/im2.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+      <td><img src="mosaic_before/im3.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+    </tr>
+    <td><img src="mosaic_after/bad_mosaic1.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+    <tr>
+      <td><img src="mosaic_before/hackathon1.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+      <td><img src="mosaic_before/hackathon2.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+      <td><img src="mosaic_before/hackathon3.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+    </tr>
+    <td><img src="mosaic_after/bad_mosaic2.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+    <tr>
+        <td><img src="mosaic_before/morningrun1.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+        <td><img src="mosaic_before/morningrun2.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+        <td><img src="mosaic_before/morningrun3.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+    </tr>
+    <td><img src="mosaic_after/bad_mosaic3.jpg" width="100%"><figcaption align="middle"></figcaption></td>
+  </table>
+</div>
+
+
+
+</body>
+</html>
