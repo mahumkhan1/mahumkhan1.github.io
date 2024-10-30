@@ -32,8 +32,7 @@
 <div>
 
 <h2 align="middle">Overview of Computing Homography and Warping the Image</h2>
-<p>In project 4, we were tasked by manipulating images by using its homography and to using that to warp the image to get the information we need. 
-     </display></p>
+<p>In project 4, we were tasked by manipulating images by using its homography and to using that to warp the image to get the information we need. </p>
 
 <!-- <div align="middle"></div>
   <img src="proj1_code/data/cathedral.jpg" align="middle" width="200px"/>
@@ -120,8 +119,116 @@
     </table>
   </div>
   
+  <h1 align="middle">Project 4: Part B</h1>
+  <h1 align="middle">Feature Matching for Autostitching</h1>
+
+  <h2 align="middle">Overview</h2>
+  <p>In project 4B, we got to use algorithims like Harris Corner and ANMS to find features in the images and then matched those features
+    to ultimately create a process to automatically stitch the images together.  </p>
+
+  <h3 align="middle">Harris Interest Point Detector</h3>
+  <p>To start, I took an image and passed it into the given function for Harris Corner Detection. This gave me the following images:</p>
+
+  <div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="harris_corner.png" width="400px"/>
+          <figcaption> The red plus signs indicate where harris corners are detected</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="harris_corner_corner_strength.png" width="400px"/>
+          <figcaption> This is the h matrix plotted which is essentially a heat map of the image that outline the 'corners'</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <h3 align="middle">Adaptive Non-Maximal Suppression</h3>
+  <p>Now that I have a starting point, I can start with the points detected via harris corners and pass them into ANMS. ANMS basically
+    sorts all the points in descending order of the strength of the harris corner and loops through top chosen number of chosen points to 
+  and calculate the distance between points. The minimum value is stored in the array and that produces a more precise result from the harris corners </p>
+
+  <div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="anms.png" width="400px"/>
+          <figcaption>The red plus signs indicate where harris corners are detected and the blue plus signs indicate where the ANMS selected points are</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <h3 align="middle">Feature Descriptor Extraction</h3>
+  <p> From that corners around the points detected in ANMA, we can generate a feature patches that will give what we will call feature descriptors. </p>
+
+  <div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="patch1.png" width="400px"/>
+          <figcaption>A patch around one of the features</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <h3 align="middle">Feature Matching</h3>
+  <p> Now we can use the feature descriptors and nearest neighbors algorithmto match them. This algorithim consists of finding all the distances between the descriptors
+    and then sorting the distances in ascending order and then finding the 2 nearest neighbor. The ratio of the nearest neighbor is compared against a threshold and if it 
+    is less it will be considered a good match and the points will be considered corresponsing points. </p>
+
+  </p>
+  <div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="feature_matching.png" width="400px"/>
+          <figcaption>Corresponsing points of the two images</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <h3 align="middle">RANSAC</h3>
+  <p> Finally, we can use RANSAC to further refine the matching process. To do this, I first selected 4 random points since this is 4-point RANSAC and computed the homography
+    of those points. Then, I used that to determine the inliers - which are the points with distances less than the threshold. This process was repeated serveral times to get the 
+  most inliers  </p>
+
+  </p>
+  <div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="ransac.png" width="400px"/>
+          <figcaption>Using RANSAC to determine corresponsing points</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+  
+
+  <h2 align="middle">The Gallery</h2>
 
 
+  <div style="text-align: center;">
+    <table style="width: 100%; table-layout: fixed;">
+      <tr>
+        <td><img src="bad_mosaic1.jpeg" width="100%"><figcaption align="middle">Before autostiching</figcaption></td>
+        <td><img src="autostitching_mosaic1.jpeg" width="100%"><figcaption align="middle">After autostiching</figcaption></td>
+      </tr>
+      <tr>
+        <td><img src="bad_mosaic3.jpeg" width="100%"><figcaption align="middle">Before autostiching</figcaption></td>
+        <td><img src="autostitching_mosaic2.jpeg" width="100%"><figcaption align="middle">After autostiching</figcaption></td>
+      </tr>
+      <tr>
+        <td><img src="bad_mosaic2.jpeg" width="100%"><figcaption align="middle">Before autostiching</figcaption></td>
+        <td><img src="autostitching_mosaic3.jpeg" width="100%"><figcaption align="middle">After autostiching</figcaption></td>
+      </tr>
+    </table>
+  </div>
 
 </body>
+
 </html>
