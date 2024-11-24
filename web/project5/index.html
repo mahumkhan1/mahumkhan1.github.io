@@ -1,0 +1,475 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180 Project 5</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">Project 5: Part A</h1>
+<h1 align="middle">The Power of Diffusion Models!</h1>
+<h2 align="middle">Mahum Khan</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview of Diffusion</h2>
+<p>In project 5, we were able to explore the power of diffusion models and how we can manipulate 
+  a sequence of noisy images to generate new images.</p>
+
+<!-- <div align="middle"></div>
+  <img src="proj1_code/data/cathedral.jpg" align="middle" width="200px"/>
+  <figcaption align="middle">The original Cathedral.jpg with the top, middle and bottom image representing the blue, green, red channel, respectively.</figcaption>
+</div> -->
+
+
+
+<h2 align="middle">Sampling From the Model</h2>
+
+<p>In this project, we were given 2 objects that already allow us to sample images from the models and by giving it 
+  one of the predefined prompt, we can generate images that match the caption. The random seed I used was 180. Below is 
+  an example of images the model generated with the prompt as the caption and the number of inference steps it took to generate it. 
+
+  The quality of the images at interference step 200 is 
+  better than at 20. This is shown through the attention to details in the bckgrounds and added dimentions in the images. We can also
+  see that the man with the hat goes from black and white to an a colored image showing that higher number of iterations also can generate
+  colors.
+
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/caption_and_output_at20.png" width="400px"/>
+        <figcaption>Generated images from the model at num_inference_step = 20</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.1/caption_and_output_at200.png" width="400px"/>
+        <figcaption>Generated images from the model at num_inference_step = 200</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+<h2 align="middle">Implementing the Forward Process</h2>
+<p> 
+  The first part of tackling diffusion models is implementing the forward process. This is the process that takes 
+  clean image and add noise based the mean and variance of the corresponding noise coefficients.
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/forward_process.png" width="400px"/>
+        <figcaption>The Campanile at different noise levels</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Classical Denoising</h2>
+<p> 
+  In our first attempt in denoising the images, we are going to try using gaussian blur to remove the noise
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/classical_denoising.png" width="400px"/>
+        <figcaption>The Campanile at different noise levels</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">One Step Denoising</h2>
+<p> 
+  Now we are going to put it all together. The noisy image is passed through the UNet denoiser, which predicts the noise that was added to it.
+  Then the predicted noise is added to the original image which creates the denoised image.
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/one_step_denoising.png" width="400px"/>
+        <figcaption>The Campanile at differert noise levels</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Iterative Denoising</h2>
+<p> 
+  With one step denosing we are able to get a pretty good denoised image. However, we can still improve the quality of the image by iterating 
+  the process.
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/iterative_denoising.png" width="400px"/>
+        <figcaption>The Campanile at different noise levels</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/compare_original.png" width="100px"/>
+        <figcaption>Original Campanile</figcaption>
+        <img src="1.1/compare_iterative.png" width="100px"/>
+        <figcaption>Iteratively Denoised Campanile</figcaption>
+        <img src="1.1/compare_1step.png" width="100px"/>
+        <figcaption>One-Step Denoised Campanile</figcaption>
+        <img src="1.1/compare_gaus.png" width="100px"/>
+        <figcaption>Gaussian Blurred Campanile</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Diffusion Model Sampling</h2>
+<p> 
+  We can use iterative denoising to also generate images from scratch.
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/diffusion_models_samples.png" width="800px"/>
+        <figcaption></figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Classifier Free Guidance</h2>
+<p> 
+  To improve the quality of the image, we can also use classifier free guidance.    
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.1/diffusion_models_samples_withcfg.png" width="800px"/>
+        <figcaption></figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Image-to-image Translation</h2>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/im_to_im.png" width="400px"/>
+        <figcaption></figcaption>
+        <img src="1.1/compare_original.png" width="100px"/>
+        <figcaption>Original Image</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/im_to_im2.png" width="400px"/>
+        <figcaption></figcaption>
+        <img src="1.7/calm.jpg" width="100px"/>
+        <figcaption>Original Image</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/im_to_im3.png" width="400px"/>
+        <figcaption></figcaption>
+        <img src="1.7/cool1.jpg" width="100px"/>
+        <figcaption>Original Image</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h3 align="middle">Editing Hand-Drawn and Web Images</h3>
+<p> 
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/im_to_im_fromweb.png" width="400px"/>
+        <figcaption>Progression to Image from the Web</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/og_fromweb.png" width="100px"/>
+        <figcaption>Original Image from the Web</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/palestine_progression.png" width="400px"/>
+        <figcaption>Progression to Hand-Drawn Image</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/og_palestine.png" width="100px"/>
+        <figcaption>Original Hand-Drawn Image</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/heart_progression.png" width="400px"/>
+        <figcaption>Progression to Hand-Drawn Image</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/og_heart.png" width="100px"/>
+        <figcaption>Original Hand-Drawn Image</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<h3 align="middle">Inpainting</h3>
+<p> 
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/mask_ex1.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/mask_ex1_final.png" width="100px"/>
+        <figcaption>Final Product</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/mask_ex2.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/mask_ex2_final.png" width="100px"/>
+        <figcaption>Final Product</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/mask_ex3.png" width="400px"/>
+        <figcaption></figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.7/mask_ex3_final.png" width="100px"/>
+        <figcaption>Final Product</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<h3 align="middle">Text-Conditioned Image-to-image Translation</h3>
+<p> 
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/rocket.png" width="500px"/>
+        <figcaption></figcaption>
+        <img src="1.1/compare_original.png" width="100px"/>
+        <figcaption>Original Image</figcaption>
+      </td>
+      </tr>
+  </table>
+</div>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/dog_in_wave.png" width="500px"/>
+        <figcaption></figcaption>
+        <img src="1.7/wave_original.png" width="100px"/>
+        <figcaption>Original Image</figcaption>
+      </td>
+      </tr>
+  </table>
+</div>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/barista_on_mountain.png" width="500px"/>
+        <figcaption></figcaption>
+        <img src="1.7/cat_original.png" width="100px"/>
+        <figcaption>Original Image</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Visual Anagrams</h2>
+<p> 
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/acampfire_flipped.png" width="100px"/>
+        <figcaption>A campfire!</figcaption>
+        <img src="1.7/aman_flipped.png" width="100px"/>
+        <figcaption>An old man?!</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.7/barista.png" width="100px"/>
+        <figcaption>A barista!</figcaption>
+        <img src="1.7/dog.png" width="100px"/>
+        <figcaption>A dog?!</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h2 align="middle">Hybrid Images</h2>
+<p> 
+  
+</p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="1.9/man_from_far_campfire_from_clode.png" width="100px"/>
+        <figcaption>A Man from Far and a Campfire from Close</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.9/pencil_from_far_rocket_from_close.png" width="100px"/>
+        <figcaption>A pencil from Far a Rocket from Close</figcaption>
+      </td>
+      <td style="text-align: center;">
+        <img src="1.9/skull_from_far_waterfall_from_close.png" width="100px"/>
+        <figcaption>A Skull from Close and a Waterfall from Far</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+  
+<h1 align="middle">Project 5: Part B</h1>
+<h1 align="middle">Diffusion Models from Scratch!</h1>
+
+<h2 align="middle">Overview</h2>
+<p>In this part of the project, we stepped through the process of creating a diffusion model from scratch. </p>
+
+<h3 align="middle">Training a Single-Step Denoising UNet</h3>
+<p>
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.1/noisy_sigmas.png" width="400px"/>
+        <figcaption> A visualization of the noising process</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.1/training_loss_curve.png" width="400px"/>
+        <figcaption> Training Loss Curve Plot</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.1/epoch1_vs_epoch5.png" width="400px"/>
+        <figcaption> Sample Results after the first and fifth epochs</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.1/denoised_to_noised.png" width="800px"/>
+        <figcaption> Sample Results with out-of-distribution noise levels after the model is trained</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h3 align="middle">Training a Diffusion Model</h3>
+<p>
+  At this point, we  can train UNet model to iteratively denoise image using FCblocks and training our data using Algorithm 1 from the paper. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.2/training_loss_time_conditioning.png" width="400px"/>
+        <figcaption> Training Loss Curve Plot</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.2/time_conditioning_epoch5.png" width="400px"/>
+        <figcaption> Sample Results at Epoch 5</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.2/time_conditioning_epoch20.png" width="400px"/>
+        <figcaption> Sample Results at Epoch 20</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p>
+  We can add Class-Conditioning to the model to further improve the quality of the generated images. 
+</p>
+
+<div style="text-align: center;">
+  <table style="width: 100%; margin: 0 auto;">
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.2/training_loss_time_class_conditioning.png" width="400px"/>
+        <figcaption> Training Loss Curve Plot</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.2/classification_epoch5.png" width="400px"/>
+        <figcaption> Sample Results at Epoch 5</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">
+        <img src="2.2/classification_epoch20.png" width="400px"/>
+        <figcaption> Sample Results at Epoch 20</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
+
+</html>
