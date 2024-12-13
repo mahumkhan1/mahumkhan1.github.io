@@ -1,0 +1,301 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 180 Final Project</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">Final Project - 21st Project</h1>
+<h1 align="middle">Neural Radiance Field: Part 1</h1>
+<h2 align="middle">Mahum Khan</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>In this project, we got to extract a lightfield data of a chessboard and then use basic operations to create
+    different effects of changing focus on the image. 
+</p>
+<h2 align="middle">Fit a Neural Field to a 2D Image</h2>
+
+<p>My hyperparameters: 
+    <ul>
+        <li>Learning rate: 0.01</li>
+        <li>Epochs: 10</li>
+        <li>Batch size: 10,000</li>
+        <li>L = 10</li>
+    </ul>
+</p>
+<p>
+    Here is what the training process looks like on the image of the fox:
+</p>
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="training_data1/e1.jpg" width="200px"/>
+          <figcaption>Epoch 1</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="training_data1/e2.jpg" width="200px"/>
+          <figcaption>Epoch 2</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="training_data1/e3.jpg" width="200px"/>
+          <figcaption>Epoch 3</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="training_data1/e4.jpg" width="200px"/>
+          <figcaption>Epoch 4</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="training_data1/e5.jpg" width="200px"/>
+          <figcaption>Epoch 5</figcaption>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <img src="training_data1/e9.jpg" width="200px"/>
+          <figcaption>Epoch 9</figcaption>
+        </td>
+      </tr>
+    </table>
+</div>
+
+<p>PNSR Training curve of my own image:</p>
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="fox_basic_parameters_psnr_curve.jpg" width="400px"/>
+          <figcaption>PNSR vs Number of Iterations</figcaption>
+        </td>
+      </tr>
+    </table>
+</div>
+
+
+<h2 align="middle">PNSR Training Curve against different Parameters</h2>
+<p>
+    Changing the L value:
+</p>
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="fox_l=1_psnr_curve.jpg" width="400px"/>
+          <figcaption>L = 1</figcaption>
+        </td>
+        <td style="text-align: center;">
+            <img src="fox_basic_parameter_psnr_curve.jpg" width="400px"/>
+            <figcaption>L = 10; basic parameters</figcaption>
+          </td>
+        <td style="text-align: center;">
+          <img src="fox_l=20_psnr_curve.jpg" width="400px"/>
+          <figcaption>L = 20</figcaption>
+        </td>
+      </tr>
+    </table>
+</div>
+<p>
+    Changing the learing rate:
+</p>
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="fox_l=.0004_psnr_curve.jpg" width="400px"/>
+          <figcaption>L = .0001</figcaption>
+        </td>
+        <td style="text-align: center;">
+            <img src="fox_basic_parameter_psnr_curve.jpg" width="400px"/>
+            <figcaption>LR = .01; basic parameters</figcaption>
+          </td>
+        <td style="text-align: center;">
+          <img src="fox_lr=.1_psnr_curve.jpg" width="400px"/>
+          <figcaption>L = .1</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+
+<p>Let's do the training on the following image:</p>
+
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="rockthrowing.jpg" width="400px"/>
+        </td>
+      </tr>
+    </table>
+</div>
+
+<p>
+    Here is what the training process looks like on my own image:
+</p>
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="own_image/e1.jpg" width="200px"/>
+          <figcaption>Epoch 1</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="own_image/e2.jpg" width="200px"/>
+          <figcaption>Epoch 2</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="own_image/e3.jpg" width="200px"/>
+          <figcaption>Epoch 3</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="own_image/e4.jpg" width="200px"/>
+          <figcaption>Epoch 4</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="own_image/e5.jpg" width="200px"/>
+          <figcaption>Epoch 5</figcaption>
+        </td>
+      </tr>
+      <tr>
+        <td style="text-align: center;">
+          <img src="own_image/e6.jpg" width="200px"/>
+          <figcaption>Epoch 6</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="own_image/e7.jpg" width="200px"/>
+          <figcaption>Epoch 7</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="own_image/e8.jpg" width="200px"/>
+          <figcaption>Epoch 8</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="own_image/e9.jpg" width="200px"/>
+          <figcaption>Epoch 9</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+  
+
+<p>PNSR Training curve of my own image:</p>
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="my_own_image_basic_parameters_psnr_curve.jpg" width="400px"/>
+          <figcaption>PNSR vs Number of Iterations</figcaption>
+        </td>
+      </tr>
+    </table>
+</div>
+
+
+<h1 align="middle">Final Project - 2nd Project</h1>
+<h1 align="middle">Lightfield Camera</h1>
+<h2 align="middle">Mahum Khan</h2>
+
+<br><br>
+
+<div>
+
+<h2 align="middle">Overview</h2>
+<p>In this project, we got to extract a lightfield data of a chessboard and then use basic operations to create
+    different effects of changing focus on the image. 
+</p>
+
+
+
+
+<h2 align="middle">Part 1: Depth Refocusing</h2>
+
+<p>
+    To create a depth refocusing effect, we simply have to apply a shift all the images and average them.
+    The shifted value is determined by a scale passed in multipled by the difference between the uv coordinates of the current image and the
+    uv coordinates of the center of the image. 
+</p>
+
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+    <tr>
+        <td style="text-align: center;">
+        <img src="scale_at_.5.jpg" width="400px"/>
+        <figcaption>C= .5</figcaption>
+        </td>
+        <td style="text-align: center;">
+        <img src="scale_at_-.1.jpg" width="400px"/>
+        <figcaption>C = -.1</figcaption>
+        </td>
+    </tr>
+    </table>
+</div>
+
+<h2 align="middle">Part 2: Aperature Adjustment</h2>
+<p> To simulate adjusting the aperture in a light field, we can modify the refocusing algorithm to average only a subset of images
+     based on a radius parameter r. If distance between the center and the uv coordinates of the image is less than r, then the image 
+     is included in the average.
+</p>
+
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="r_at_2.jpg" width="400px"/>
+          <figcaption>r = 2</figcaption>
+        </td>
+        <td style="text-align: center;">
+          <img src="r_at_8.jpg" width="400px"/>
+          <figcaption>r = 8</figcaption>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+<p>Similar to part a, combining the images at the different r values can produce a aperature refocusing effect.
+</p>
+
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="aperature_refocus_0_to_60.gif" width="400px"/>
+          <figcaption>combining images with r = 0 to 60</figcaption>
+        </td>
+      </tr>
+    </table>
+</div>
+
+<h2 align="middle">Summary</h2>
+<p> 
+    This project revealed that light fields capture both the intensity and direction of light, enabling post-capture 
+    adjustments like refocusing and perspective shifts. By averaging subsets of sub-aperture images based on a radius 
+    parameter r, we can simulate varying aperture sizes to control depth of field and achieve effects like enhanced bokeh. 
+    Light fields offer immense creative and technical potential, redefining photography with capabilities like post-capture focus adjustments, depth-based segmentation, and 3D reconstruction.
+</p>
+
+
+
+</body>
+</html>
