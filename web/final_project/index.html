@@ -240,20 +240,6 @@
     </table>
 </div>
 
-<p>Combining the images at the different C values can produce a aperature refocusing effect.
-</p>
-
-<div style="text-align: center;">
-    <table style="width: 100%; margin: 0 auto;">
-      <tr>
-        <td style="text-align: center;">
-          <img src="depth_refocus_-.15_to_.65.gif" width="400px"/>
-          <figcaption>combining images with C = -.15 to .65</figcaption>
-        </td>
-      </tr>
-    </table>
-</div>
-
 <h2 align="middle">Part 2: Aperature Adjustment</h2>
 <p> To simulate adjusting the aperture in a light field, we can modify the refocusing algorithm to average only a subset of images
      based on a radius parameter r. If distance between the center and the uv coordinates of the image is less than r, then the image 
@@ -275,6 +261,31 @@
     </table>
   </div>
 
+
+<h2 align="middle">Summary</h2>
+<p> 
+    This project revealed that light fields capture both the intensity and direction of light, enabling post-capture 
+    adjustments like refocusing and perspective shifts. By averaging subsets of sub-aperture images based on a radius 
+    parameter r, we can simulate varying aperture sizes to control depth of field and achieve effects like enhanced bokeh. 
+    Light fields offer immense creative and technical potential, redefining photography with capabilities like post-capture focus adjustments, depth-based segmentation, and 3D reconstruction.
+</p>
+
+<h2 align="middle">Bells and Whistles </h2>
+
+<p>Combining the images at the different C values can produce a aperature refocusing effect.
+</p>
+
+<div style="text-align: center;">
+    <table style="width: 100%; margin: 0 auto;">
+      <tr>
+        <td style="text-align: center;">
+          <img src="depth_refocus_-.15_to_.65.gif" width="400px"/>
+          <figcaption>combining images with C = -.15 to .65</figcaption>
+        </td>
+      </tr>
+    </table>
+</div>
+
 <p>Similar to part a, combining the images at the different r values can produce a aperature refocusing effect.
 </p>
 
@@ -288,16 +299,6 @@
       </tr>
     </table>
 </div>
-
-<h2 align="middle">Summary</h2>
-<p> 
-    This project revealed that light fields capture both the intensity and direction of light, enabling post-capture 
-    adjustments like refocusing and perspective shifts. By averaging subsets of sub-aperture images based on a radius 
-    parameter r, we can simulate varying aperture sizes to control depth of field and achieve effects like enhanced bokeh. 
-    Light fields offer immense creative and technical potential, redefining photography with capabilities like post-capture focus adjustments, depth-based segmentation, and 3D reconstruction.
-</p>
-
-
 
 </body>
 </html>
